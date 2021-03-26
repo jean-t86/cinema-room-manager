@@ -17,7 +17,7 @@ class Theatre(val rows: Int, val seats: Int) {
             true
         }
 
-    fun isSeatTaken(rowNumber: Int, seatInRow: Int) : Boolean =
+    fun isSeatTaken(rowNumber: Int, seatInRow: Int): Boolean =
         _reservations.any { (row, col) ->
             rowNumber == row && seatInRow == col
         }
@@ -34,16 +34,21 @@ class Theatre(val rows: Int, val seats: Int) {
                 strBuilder.append(i)
             }
             for (j in 0..seats) {
-                if (j == 0) {
-                    strBuilder.append(" ")
-                } else if (i == 0) {
-                    strBuilder.append("$j ")
-                } else if (_reservations.any { (row, seat) ->
+                when {
+                    j == 0 -> {
+                        strBuilder.append(" ")
+                    }
+                    i == 0 -> {
+                        strBuilder.append("$j ")
+                    }
+                    _reservations.any { (row, seat) ->
                         row == i && seat == j
-                    }) {
-                    strBuilder.append("$RESERVED_SEAT ")
-                } else {
-                    strBuilder.append("$SEAT ")
+                    } -> {
+                        strBuilder.append("$RESERVED_SEAT ")
+                    }
+                    else -> {
+                        strBuilder.append("$SEAT ")
+                    }
                 }
             }
         }

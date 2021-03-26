@@ -30,18 +30,6 @@ class Sales(private val theatre: Theatre) {
         return "\$$totalIncome"
     }
 
-    fun totalPriceSoldOut(): Int {
-        val isLargeRoom = theatre.rows * theatre.seats > LARGE_ROOM_MIN_SEATS
-        return if (isLargeRoom) {
-            val frontHalf = floor(theatre.rows / 2.0).toInt()
-            val backHalf = theatre.rows - frontHalf
-
-            ((frontHalf * theatre.seats) * TICKET_PRICE_10) + ((backHalf * theatre.seats) * TICKET_PRICE_8)
-        } else {
-            (theatre.rows * theatre.seats) * TICKET_PRICE_10
-        }
-    }
-
     fun ticketPrice(rowNumber: Int): Int {
         val isLargeRoom = theatre.rows * theatre.seats > LARGE_ROOM_MIN_SEATS
         return if (isLargeRoom) {
@@ -55,7 +43,6 @@ class Sales(private val theatre: Theatre) {
             TICKET_PRICE_10
         }
     }
-
 }
 
 private const val LARGE_ROOM_MIN_SEATS = 60
