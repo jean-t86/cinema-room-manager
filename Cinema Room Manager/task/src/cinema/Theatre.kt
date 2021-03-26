@@ -17,6 +17,11 @@ class Theatre(val rows: Int, val seats: Int) {
             true
         }
 
+    fun isSeatTaken(rowNumber: Int, seatInRow: Int) : Boolean =
+        _reservations.any { (row, col) ->
+            rowNumber == row && seatInRow == col
+        }
+
     fun cinemaScheme(): String {
         val strBuilder: StringBuilder = StringBuilder()
         strBuilder.append(CINEMA)

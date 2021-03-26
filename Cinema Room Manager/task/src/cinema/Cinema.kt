@@ -26,18 +26,31 @@ fun main() {
                 println(theatre.cinemaScheme())
             }
             2 -> {
-                // do.. while
-                println("Enter a row number:")
-                val rowNumber = readLine()!!.toInt()
-                println("Enter a seat number in that row:")
-                val seatInRow = readLine()!!.toInt()
+                var validCoords = false
+                do {
+                    println("Enter a row number:")
+                    val rowNumber = readLine()!!.toInt()
+                    println("Enter a seat number in that row:")
+                    val seatInRow = readLine()!!.toInt()
 
-                if (!theatre.reserveSeat(rowNumber, seatInRow)) {
-                    println("That ticket has already been purchased!")
-                } else {
-                    print("Ticket price: ")
-                    println("\$${sales.ticketPrice(rowNumber)}")
-                }
+                    if (theatre.isSeatTaken(rowNumber, seatInRow)) {
+                        println("That ticket has already been purchased!")
+                        continue
+                    }
+
+                    if (rowNumber > rows || seatInRow > seats) {
+                        println("Wrong input!")
+                        continue
+                    }
+
+                    validCoords = true
+                    if (!theatre.reserveSeat(rowNumber, seatInRow)) {
+                        println("That ticket has already been purchased!")
+                    } else {
+                        print("Ticket price: ")
+                        println("\$${sales.ticketPrice(rowNumber)}")
+                    }
+                } while (!validCoords)
             }
             3 -> {
                 println("Number of purchased tickets: ${sales.totalTicketsSold()}")
