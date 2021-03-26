@@ -1,40 +1,23 @@
 package cinema
 
-import kotlin.math.floor
+class Theatre(val rows: Int, val seats: Int) {
 
-class Theatre {
+    private val _reservations: MutableList<Pair<Int, Int>> = mutableListOf()
+    val reservations: List<Pair<Int, Int>>
+        get() = _reservations
 
-    fun totalPriceSoldOut(rows: Int, seats: Int): Int {
-        val isLargeRoom = rows * seats > LARGE_ROOM_MIN_SEATS
-        return if (isLargeRoom) {
-            val frontHalf = floor(rows / 2.0).toInt()
-            val backHalf = rows - frontHalf
+    val totalSeats: Int
+        get() = rows * seats
 
-            ((frontHalf * seats) * TICKET_PRICE_10) + ((backHalf * seats) * TICKET_PRICE_8)
+    fun reserveSeat(rowNumber: Int, seatInRow: Int): Boolean =
+        if (_reservations.contains(Pair(rowNumber, seatInRow))) {
+            false
         } else {
-            (rows * seats) * TICKET_PRICE_10
+            _reservations.add(Pair(rowNumber, seatInRow))
+            true
         }
-    }
 
-    fun ticketPrice(rows: Int, seats: Int, rowNumber: Int): Int {
-        val isLargeRoom = rows * seats > LARGE_ROOM_MIN_SEATS
-        return if (isLargeRoom) {
-            val frontHalf = floor(rows / 2.0).toInt()
-            if (rowNumber <= frontHalf) {
-                TICKET_PRICE_10
-            } else {
-                TICKET_PRICE_8
-            }
-        } else {
-            TICKET_PRICE_10
-        }
-    }
-
-    private val reservations: MutableList<Pair<Int, Int>> = mutableListOf()
-    fun reserveSeat(rowNumber: Int, seatInRow: Int) =
-        reservations.add(Pair(rowNumber, seatInRow))
-
-    fun cinemaScheme(rows: Int, seats: Int): String {
+    fun cinemaScheme(): String {
         val strBuilder: StringBuilder = StringBuilder()
         strBuilder.append(CINEMA)
         for (i in 0..rows) {
@@ -50,7 +33,7 @@ class Theatre {
                     strBuilder.append(" ")
                 } else if (i == 0) {
                     strBuilder.append("$j ")
-                } else if (reservations.any { (row, seat) ->
+                } else if (_reservations.any { (row, seat) ->
                         row == i && seat == j
                     }) {
                     strBuilder.append("$RESERVED_SEAT ")
@@ -66,6 +49,3 @@ class Theatre {
 private const val SEAT = 'S'
 private const val RESERVED_SEAT = 'B'
 private const val CINEMA = "Cinema:"
-private const val LARGE_ROOM_MIN_SEATS = 60
-private const val TICKET_PRICE_10 = 10
-private const val TICKET_PRICE_8 = 8

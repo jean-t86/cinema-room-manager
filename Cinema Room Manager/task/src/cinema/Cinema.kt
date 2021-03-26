@@ -9,30 +9,41 @@ fun main() {
     val seats: Int = readLine()!!.toInt()
     //endregion
 
-    val theatre = Theatre()
+    val theatre = Theatre(rows, seats)
+    val sales = Sales(theatre)
 
     do {
         println()
         println("1. Show the seats")
         println("2. Buy a ticket")
+        println("3. Statistics")
         println("0. Exit")
         val menuChoice = readLine()!!.toInt()
         println()
 
         when (menuChoice) {
             1 -> {
-                println(theatre.cinemaScheme(rows, seats))
+                println(theatre.cinemaScheme())
             }
             2 -> {
+                // do.. while
                 println("Enter a row number:")
                 val rowNumber = readLine()!!.toInt()
                 println("Enter a seat number in that row:")
                 val seatInRow = readLine()!!.toInt()
 
-                theatre.reserveSeat(rowNumber, seatInRow)
-
-                print("Ticket price: ")
-                println("\$${theatre.ticketPrice(rows, seats, rowNumber)}")
+                if (!theatre.reserveSeat(rowNumber, seatInRow)) {
+                    println("That ticket has already been purchased!")
+                } else {
+                    print("Ticket price: ")
+                    println("\$${sales.ticketPrice(rowNumber)}")
+                }
+            }
+            3 -> {
+                println("Number of purchased tickets: ${sales.totalTicketsSold()}")
+                println("Percentage: ${sales.totalTicketsSoldAsPercentage()}")
+                println("Current income: ${sales.currentIncome()}")
+                println("Total income: ${sales.totalIncome()}")
             }
             0 -> break
         }
